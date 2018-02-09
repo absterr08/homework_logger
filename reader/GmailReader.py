@@ -4,6 +4,7 @@ import os
 import pdb
 import base64
 import re
+import datetime
 
 from apiclient import discovery
 from oauth2client import client
@@ -27,13 +28,18 @@ class GmailReader:
     LABEL_ID = 'Label_1'
     MAX_RESULTS = 50
 
-    def __init__(self, day):
+    def __init__(self, day, date=None):
         self.day = day
+        self.dateQuery = self.setDateQuery(date)
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
         self.service = discovery.build('gmail', 'v1', http=self.http)
         self.messages = self.service.users().messages()
         self.submitterEmails = []
+
+    def setDateQuery(self, date):
+        if date = None:
+
 
     def get_credentials(self):
         """Gets valid user credentials from storage.
@@ -64,7 +70,8 @@ class GmailReader:
         return credentials
 
     def getMessageIds(self):
-        messages = self.service.users().messages().list(userId='me', labelIds=[self.LABEL_ID], maxResults=self.MAX_RESULTS).execute()['messages']
+        messages = self.service.users().messages().list(userId='me', labelIds=[self.LABEL_ID],
+        q=self.dateQuery).execute()['messages']
         messageIds = []
         for message in messages:
             messageIds.append(message['id'])
@@ -102,12 +109,15 @@ class GmailReader:
 
 def main():
     day = raw_input("Enter day (WxDx):\n")
+    print("*****************")
+    date = raw_input("Enter date to search after (optional; defaults to yesterday) (yyyy/mm/dd):\n")
+    print("*****************")
     # limit = raw_input("Search all messages? (y/n):\n")
     # limit = False if limit == "y" else True
-    gmailReader = GmailReader(day)
+    gmailReader = GmailReader(day, date)
     gmailReader.populateMessageSenders()
-    print(gmailReader.submitterEmails)
-
+    for name in gmailReader.submitterEmails:
+        print(name)
 
 
 
