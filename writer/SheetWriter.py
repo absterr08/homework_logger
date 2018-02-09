@@ -63,19 +63,23 @@ def main():
     service = discovery.build('sheets', 'v4', http=http,
                               discoveryServiceUrl=discoveryUrl)
 
-    spreadsheetId = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-    rangeName = 'Class Data!A2:E'
+    API_KEY = 'AIzaSyDRhoY4b__NXarftJhj0urTkgVq53ssvVM'
+    # spreadsheetId = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+    spreadsheetId = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
+    # rangeName = 'Class Data!A2:B'
+    rangeName = 'A2:B'
     result = service.spreadsheets().values().get(
-        spreadsheetId=spreadsheetId, range=rangeName).execute()
+        spreadsheetId=spreadsheetId, range=rangeName, key=API_KEY).execute()
     values = result.get('values', [])
 
     if not values:
         print('No data found.')
     else:
-        print('Name, Major:')
+        print('Name,        Email')
+        # print('Name, Email, W1D1, W2D2')
         for row in values:
             # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
+            print('%s,  %s' % (row[0], row[1]))
 
 
 if __name__ == '__main__':
