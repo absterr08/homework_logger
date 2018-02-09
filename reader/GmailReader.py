@@ -26,7 +26,6 @@ class GmailReader:
     CLIENT_SECRET_FILE = 'client_secret.json'
     APPLICATION_NAME = 'Gmail API Python Quickstart'
     LABEL_ID = 'Label_1'
-    MAX_RESULTS = 50
 
     def __init__(self, day, date=None):
         self.day = day
@@ -38,7 +37,9 @@ class GmailReader:
         self.submitterEmails = []
 
     def setDateQuery(self, date):
-        if date = None:
+        if date == '':
+            date = datetime.date.today() - datetime.timedelta(1)
+        return "after:" + str(date)
 
 
     def get_credentials(self):
@@ -70,7 +71,7 @@ class GmailReader:
         return credentials
 
     def getMessageIds(self):
-        messages = self.service.users().messages().list(userId='me', labelIds=[self.LABEL_ID],
+        messages = self.messages.list(userId='me', labelIds=[self.LABEL_ID],
         q=self.dateQuery).execute()['messages']
         messageIds = []
         for message in messages:
