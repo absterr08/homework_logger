@@ -124,8 +124,9 @@ class SheetWriter:
 
 
 def main():
-    writer = SheetWriter()
-    cells = ['X1', 'X3', 'X5', 'X7', 'X9']
+    writer = SheetWriter('W1D3', ['Abby Hersh', 'Bob Bobertson'])
+    writer.setup()
+    cells = writer.range
     writer.markCells(cells)
 
 
