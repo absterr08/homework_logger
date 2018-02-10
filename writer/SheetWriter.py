@@ -9,6 +9,7 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 
+
 try:
     import argparse
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
@@ -17,16 +18,31 @@ except ImportError:
 
 
 class SheetWriter:
-# If modifying these scopes, delete your previously saved credentials
+    from wxdx_table import WEEK_DAYS
+    # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
     CLIENT_SECRET_FILE = 'client_secret.json'
     APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
-    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    # tester IDs plus a valid API_KEY if necessary
+    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
+    API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
+
+    #actual a/A sheet:
+    # SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
+
     MARK = [['X']]
 
-    def __init__(self):
+
+    # On initialization, provide a Week and Day as a string, ex: 'W3D4'
+    # also provide the list of students who've completed their HW
+    def __init__(self, WXDX, students):
+        self.day = WXDX
+        self.students_complete = students
+        # assigns an API_KEY if one is defined above, else leaves empty.
+        self.API_KEY = self.API_KEY or ''
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
         self.discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -68,20 +84,49 @@ class SheetWriter:
         }
 
         result = self.service.spreadsheets().values().update(
-        spreadsheetId=self.SHEET_ID, range=cell,
-        valueInputOption="USER_ENTERED",
+        spreadsheetId=self.SHEET_ID, range=cell, key=self.API_KEY,
+        # valueInputOption="USER_ENTERED",
         body=body).execute()
 
     def markCells(self, cells):
         for cell in cells:
             self.markCell(cell)
 
+    # generates a dictionary of students pointing to their corresponding row numbers from the sheet
+    def assign_keys(self, names):
+        students = {}
+        idx = 3
+        for name in names:
+            students[name] = str(idx)
+            idx += 1
+            self.student_keys = students
+
+    # Collects the students from the spreadsheet then converts them to a dictionary
+    def student_keys(self):
+        result = self.service.spreadsheets().values().get(
+        spreadsheetId=self.SHEET_ID, range='B3:B', majorDimension='COLUMNS'
+        ).execute()
+        self.assign_keys(result['values'][0])
+
+    # Defines the range of cells to be edited with 'markCells'
+    def range_setter(self):
+        cells = []
+        col = self.WEEK_DAYS[self.day]
+        for student in self.students_complete:
+            cells.append(col + self.student_keys[student])
+        self.range = cells
+
+    def setup(self):
+        self.student_keys()
+        self.range_setter()
+
+
+
 
 def main():
     writer = SheetWriter()
     cells = ['X1', 'X3', 'X5', 'X7', 'X9']
     writer.markCells(cells)
-
 
 
 if __name__ == '__main__':
