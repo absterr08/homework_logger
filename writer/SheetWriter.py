@@ -26,8 +26,8 @@ class SheetWriter:
     APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
     # tester IDs plus a valid API_KEY if necessary
-    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
-    SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
+    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    # SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
@@ -42,7 +42,8 @@ class SheetWriter:
         self.day = WXDX
         self.students_complete = students
         # assigns an API_KEY if one is defined above, else leaves empty.
-        self.API_KEY = self.API_KEY or ''
+        # self.API_KEY = self.API_KEY or ''
+        self.API_KEY = ''
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
         self.discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -85,7 +86,7 @@ class SheetWriter:
 
         result = self.service.spreadsheets().values().update(
         spreadsheetId=self.SHEET_ID, range=cell, key=self.API_KEY,
-        # valueInputOption="USER_ENTERED",
+        valueInputOption="USER_ENTERED",
         body=body).execute()
 
     def markCells(self, cells):
@@ -124,7 +125,7 @@ class SheetWriter:
 
 
 def main():
-    writer = SheetWriter('W1D3', ['Abby Hersh', 'Bob Bobertson'])
+    writer = SheetWriter('W1D3', ['Adam Blum', 'Armin Ansari'])
     writer.setup()
     cells = writer.range
     writer.markCells(cells)
