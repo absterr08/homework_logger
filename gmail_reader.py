@@ -24,7 +24,7 @@ class GmailReader:
     SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'
 
     CLIENT_SECRET_FILE = 'gmail_client_secret.json'
-    APPLICATION_NAME = 'Gmail API Python Quickstart'
+    APPLICATION_NAME = 'a/A Homework Logger'
     LABEL_ID = 'Label_1'
 
     def __init__(self, day, date=None):
@@ -56,7 +56,7 @@ class GmailReader:
         if not os.path.exists(credential_dir):
             os.makedirs(credential_dir)
         credential_path = os.path.join(credential_dir,
-                                       'gmail-python-quickstart.json')
+                                       'homework_logger-gmail-api.json')
 
         store = Storage(credential_path)
         credentials = store.get()
@@ -81,7 +81,7 @@ class GmailReader:
 
     def getMessageBody(self, messageId):
         message = self.messages.get(userId='me', id=messageId, format='raw').execute()
-        return base64.urlsafe_b64decode(message['raw'].encode('ASCII'))
+        return base64.urlsafe_b64decode(message['raw'].encode('ASCII')).decode('utf-8')
 
     def getMessageSubject(self, messageBody):
         return re.search('Subject: (.*?)\\r\\n', messageBody).group(1)

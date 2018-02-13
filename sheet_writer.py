@@ -23,11 +23,11 @@ class SheetWriter:
     # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
     CLIENT_SECRET_FILE = 'docs_client_secret.json'
-    APPLICATION_NAME = 'Google Sheets API Python Quickstart'
+    APPLICATION_NAME = 'a/A Homework Logger'
 
     # tester IDs plus a valid API_KEY if necessary
-    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
-    SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
+    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    # SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
@@ -66,7 +66,7 @@ class SheetWriter:
             # pdb.set_trace()
             os.makedirs(credential_dir)
         credential_path = os.path.join(credential_dir,
-                                       'sheets.googleapis.com-python-quickstart.json')
+                                       'homework_logger-google-docs-api.json')
 
         store = Storage(credential_path)
         credentials = store.get()
