@@ -26,8 +26,8 @@ class SheetWriter:
     APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
     # tester IDs plus a valid API_KEY if necessary
-    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
-    # SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
+    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
@@ -42,8 +42,8 @@ class SheetWriter:
         self.day = WXDX
         self.students_complete = students
         # assigns an API_KEY if one is defined above, else leaves empty.
-        # self.API_KEY = self.API_KEY or ''
-        self.API_KEY = ''
+        self.API_KEY = self.API_KEY or ''
+        # self.API_KEY = ''
         self.credentials = self.get_credentials()
         self.http = self.credentials.authorize(httplib2.Http())
         self.discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -63,6 +63,7 @@ class SheetWriter:
         home_dir = os.path.expanduser('~')
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
+            # pdb.set_trace()
             os.makedirs(credential_dir)
         credential_path = os.path.join(credential_dir,
                                        'sheets.googleapis.com-python-quickstart.json')
@@ -90,8 +91,14 @@ class SheetWriter:
         body=body).execute()
 
     def markCells(self, cells):
+        count = 0
         for cell in cells:
             self.markCell(cell)
+            print(f'{cell} marked')
+            count += 1
+
+        print(f'{count} cells marked')
+
 
     # generates a dictionary of students pointing to their corresponding row numbers from the sheet
     def assign_keys(self, names):
@@ -121,14 +128,33 @@ class SheetWriter:
         self.student_keys()
         self.range_setter()
 
+    def input_handler(self, input):
+        handler = {
+            'y': True,
+            'n': False
+        }
+        pdb.set_trace()
+        return handler[input]
+
+    def good_bye(self):
+        print('Operation cancelled.  Goodbye!')
+        SystemExit()
 
 
 
 def main():
-    writer = SheetWriter('W1D3', ['Adam Blum', 'Armin Ansari'])
+    writer = SheetWriter('W1D3', ['Abby Hersh'])
     writer.setup()
     cells = writer.range
-    writer.markCells(cells)
+    print('The following students will have their homework marked as complete in the following cells:')
+    print('--------------------')
+    i = 0
+    while i < len(writer.range):
+        print(f'{writer.students_complete[0]} : {writer.range[0]}')
+        i += 1
+
+    confirm = input("Do you want to proceed? (y/n)\n")
+    writer.markCells(cells) if writer.input_handler(confirm) else writer.good_bye()
 
 
 if __name__ == '__main__':
