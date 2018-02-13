@@ -1,5 +1,5 @@
 from gmail_reader import GmailReader
-from SheetWriter import SheetWriter
+from sheet_writer import SheetWriter
 import re
 import pdb
 
@@ -22,9 +22,9 @@ def main():
         date = raw_input("Please enter a valid date (yyyy/mm/dd): ")
     print(lineSeparator)
     print("Finding the good students who did their work...")
-    gmailReader = GmailReader(day, date)
-    gmailReader.populateMessageSenders()
-    emails = gmailReader.submitterEmails
+    reader = GmailReader(day, date)
+    reader.populateMessageSenders()
+    emails = reader.submitterEmails
 
     writer = SheetWriter(day, emails)
     writer.setup()
