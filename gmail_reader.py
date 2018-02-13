@@ -25,7 +25,10 @@ class GmailReader:
 
     CLIENT_SECRET_FILE = 'gmail_client_secret.json'
     APPLICATION_NAME = 'a/A Homework Logger'
+<<<<<<< HEAD
     LABEL_ID = 'aa_studenthwrk'
+=======
+>>>>>>> dcc4e803db2aabd9f1099f4677165de5b1f9136e
 
     def __init__(self, day, date=None):
         self.day = day
@@ -71,7 +74,7 @@ class GmailReader:
         return credentials
 
     def getMessageIds(self):
-        messages = self.messages.list(userId='me', labelIds=[self.LABEL_ID],
+        messages = self.messages.list(userId='me',
         q=self.dateQuery).execute()['messages']
         messageIds = []
         for message in messages:
@@ -94,6 +97,7 @@ class GmailReader:
 
     def checkMessageSubject(self, messageBody):
         subject = self.getMessageSubject(messageBody)
+        searchString = 'HWRK ' + self.day
         rgxMatch = re.search(self.day, subject)
         return True if rgxMatch else False
 
