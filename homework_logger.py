@@ -25,7 +25,6 @@ def main():
     reader = GmailReader(day, date)
     reader.populateMessageSenders()
     emails = reader.submitterEmails
-
     writer = SheetWriter(day, emails)
     writer.setup()
     cells = writer.range
