@@ -22,7 +22,7 @@ class SheetWriter:
     # If modifying these scopes, delete your previously saved credentials
     # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
     SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-    CLIENT_SECRET_FILE = 'client_secret.json'
+    CLIENT_SECRET_FILE = 'docs_client_secret.json'
     APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
     # tester IDs plus a valid API_KEY if necessary
@@ -139,23 +139,3 @@ class SheetWriter:
     def good_bye(self):
         print('Operation cancelled.  Goodbye!')
         SystemExit()
-
-
-
-def main():
-    writer = SheetWriter('W1D3', ['Abby Hersh'])
-    writer.setup()
-    cells = writer.range
-    print('The following students will have their homework marked as complete in the following cells:')
-    print('--------------------')
-    i = 0
-    while i < len(writer.range):
-        print(f'{writer.students_complete[0]} : {writer.range[0]}')
-        i += 1
-
-    confirm = input("Do you want to proceed? (y/n)\n")
-    writer.markCells() if writer.input_handler(confirm) else writer.good_bye()
-
-
-if __name__ == '__main__':
-    main()
