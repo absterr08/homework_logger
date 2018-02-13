@@ -87,10 +87,10 @@ class GmailReader:
         return re.search('Subject: (.*?)\\r\\n', messageBody).group(1)
 
     def getMessageSenderEmail(self, messageBody):
-        return re.search('From: (.*?) <.*?>\\r\\n', messageBody).group(1)
+        return re.search('From:.*?<(.*?)>\\r\\n', messageBody).group(1)
 
     def getMessageSenderName(self, messageBody):
-        return re.search('From:.*?<(.*?)>\\r\\n', messageBody).group(1)
+        return re.search('From: (.*?) <.*?>\\r\\n', messageBody).group(1)
 
     def checkMessageSubject(self, messageBody):
         subject = self.getMessageSubject(messageBody)
@@ -101,33 +101,6 @@ class GmailReader:
         messageIds = self.getMessageIds()
         for messageId in messageIds:
             messageBody = self.getMessageBody(messageId)
-            senderEmail = self.getMessageSenderEmail(messageBody)
             if self.checkMessageSubject(messageBody):
+                senderEmail = self.getMessageSenderEmail(messageBody)
                 self.submitterEmails.append(senderEmail)
-
-
-
-
-def main():
-    day = raw_input("Enter day (WxDx):\n")
-    print("*****************")
-    date = raw_input("Enter date to search after (optional; defaults to yesterday) (yyyy/mm/dd):\n")
-    print("*****************")
-    # limit = raw_input("Search all messages? (y/n):\n")
-    # limit = False if limit == "y" else True
-    gmailReader = GmailReader(day, date)
-    gmailReader.populateMessageSenders()
-    for name in gmailReader.submitterEmails:
-        print(name)
-
-def valiDate(date):
-    matchDashes = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}')
-    matchSlashes = re.search('[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}')
-    if matchDashes or matchSlashes:
-        return True
-    return False
-
-
-
-if __name__ == '__main__':
-    main()
