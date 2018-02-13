@@ -25,7 +25,7 @@ class GmailReader:
 
     CLIENT_SECRET_FILE = 'gmail_client_secret.json'
     APPLICATION_NAME = 'a/A Homework Logger'
-    LABEL_ID = 'Label_1'
+    LABEL_ID = 'aa_studenthwrk'
 
     def __init__(self, day, date=None):
         self.day = day
