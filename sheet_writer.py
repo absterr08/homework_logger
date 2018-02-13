@@ -112,7 +112,7 @@ class SheetWriter:
     # Collects the students from the spreadsheet then converts them to a dictionary
     def student_keys(self):
         result = self.service.spreadsheets().values().get(
-        spreadsheetId=self.SHEET_ID, range='B3:B', majorDimension='COLUMNS'
+        spreadsheetId=self.SHEET_ID, range='C3:C', majorDimension='COLUMNS'
         ).execute()
         self.assign_keys(result['values'][0])
 
