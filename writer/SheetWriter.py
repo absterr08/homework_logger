@@ -90,14 +90,14 @@ class SheetWriter:
         valueInputOption="USER_ENTERED",
         body=body).execute()
 
-    def markCells(self, cells):
+    def markCells(self):
         count = 0
-        for cell in cells:
+        for cell in self.range:
             self.markCell(cell)
             print(f'{cell} marked')
             count += 1
 
-        print(f'{count} cells marked')
+        print(f'{count} cell(s) marked')
 
 
     # generates a dictionary of students pointing to their corresponding row numbers from the sheet
@@ -133,7 +133,7 @@ class SheetWriter:
             'y': True,
             'n': False
         }
-        pdb.set_trace()
+
         return handler[input]
 
     def good_bye(self):
@@ -154,7 +154,7 @@ def main():
         i += 1
 
     confirm = input("Do you want to proceed? (y/n)\n")
-    writer.markCells(cells) if writer.input_handler(confirm) else writer.good_bye()
+    writer.markCells() if writer.input_handler(confirm) else writer.good_bye()
 
 
 if __name__ == '__main__':
