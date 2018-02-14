@@ -31,8 +31,7 @@ def main():
     reader = GmailReader(day, date)
     print("🕵️‍♀️ Finding the good students who did their work...")
     reader.populateMessageSenders()
-    emails = reader.submitterEmails
-    writer = SheetWriter(day, emails)
+    writer = SheetWriter(day, reader.submitterEmails)
     writer.setup()
     cells = writer.range
     print('The following students will have their homework marked as complete in the following cells:')
