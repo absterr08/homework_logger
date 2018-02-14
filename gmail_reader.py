@@ -25,6 +25,8 @@ class GmailReader:
 
     CLIENT_SECRET_FILE = 'gmail_client_secret.json'
     APPLICATION_NAME = 'a/A Homework Logger'
+    LABEL_ID = 'Label_1'
+    # self.service.users().labels().list(userId='me').execute()
 
     def __init__(self, day, date=None):
         self.day = day
@@ -34,12 +36,16 @@ class GmailReader:
         self.service = discovery.build('gmail', 'v1', http=self.http)
         self.messages = self.service.users().messages()
         self.submitterEmails = []
+        self.searching = False
 
     def setDateQuery(self, date):
         if date == '':
-            date = datetime.date.today() - datetime.timedelta(1)
-        return "after:" + str(date)
-
+            dayBeforeToday = datetime.date.today() - datetime.timedelta(2)
+            return "after:" + str(dayBeforeToday)
+        givenDate = datetime.datetime.strptime(date, "%Y-%m-%d")
+        dayBefore = (givenDate - datetime.timedelta(2)).date()
+        dayAfter = (givenDate + datetime.timedelta(2)).date()
+        return "after:" + str(dayBefore) + " before:" + str(dayAfter)
 
     def get_credentials(self):
         """Gets valid user credentials from storage.
@@ -71,11 +77,10 @@ class GmailReader:
 
     def getMessageIds(self):
         messages = self.messages.list(userId='me',
-        q=self.dateQuery).execute()['messages']
+        q=self.dateQuery, maxResults=1000, labelIds=self.LABEL_ID).execute()['messages']
         messageIds = []
         for message in messages:
             messageIds.append(message['id'])
-
         return messageIds
 
     def getMessageBody(self, messageId):
@@ -94,7 +99,7 @@ class GmailReader:
     def checkMessageSubject(self, messageBody):
         subject = self.getMessageSubject(messageBody)
         searchString = 'HWRK ' + self.day
-        rgxMatch = re.search(self.day, subject)
+        rgxMatch = re.search(searchString, subject)
         return True if rgxMatch else False
 
     def populateMessageSenders(self):

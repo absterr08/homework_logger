@@ -95,7 +95,7 @@ class SheetWriter:
         count = 0
         for cell in self.range:
             self.markCell(cell)
-            print(f'{cell} marked')
+            print(f'{cell} marked ❎')
             count += 1
 
         print(f'{count} cell(s) marked')
@@ -122,7 +122,10 @@ class SheetWriter:
         cells = []
         col = self.WEEK_DAYS[self.day]
         for student in self.students_complete:
-            cells.append(col + self.student_keys[student])
+            try:
+                cells.append(col + self.student_keys[student])
+            except:
+                print('🚨 oh no! 🚨 this email isn\'t on the spreadsheet: ' + student)
         self.range = cells
 
     def setup(self):

@@ -12,20 +12,26 @@ def validateDate(date):
         return True
     return False
 
+def validateDay(day):
+    matchDay = re.search('W[1-9]{1}D[1-5]{1}', day)
+    return True if matchDay else False
+
 def main():
-    lineSeparator = "****************************************************************************"
+    lineSeparator = "********************************************************************************************"
     day = input("Enter day (WxDx):\n")
+    while not validateDay(day):
+        print(lineSeparator)
+        day = input('Please enter a valid day (WxDx):')
     print(lineSeparator)
     date = input("Enter date to search after (optional; defaults to yesterday) (yyyy/mm/dd):\n")
     while not validateDate(date):
         print(lineSeparator)
         date = input("Please enter a valid date (yyyy/mm/dd): ")
     print(lineSeparator)
-    print("Finding the good students who did their work...")
     reader = GmailReader(day, date)
+    print("🕵️‍♀️ Finding the good students who did their work...")
     reader.populateMessageSenders()
-    emails = reader.submitterEmails
-    writer = SheetWriter(day, emails)
+    writer = SheetWriter(day, reader.submitterEmails)
     writer.setup()
     cells = writer.range
     print('The following students will have their homework marked as complete in the following cells:')
