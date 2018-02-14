@@ -26,13 +26,13 @@ class SheetWriter:
     APPLICATION_NAME = 'a/A Homework Logger'
 
     # tester IDs plus a valid API_KEY if necessary
-    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
 
     # SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
-    # SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
+    SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
 
     MARK = [['X']]
 
