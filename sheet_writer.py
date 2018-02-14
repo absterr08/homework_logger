@@ -26,13 +26,13 @@ class SheetWriter:
     APPLICATION_NAME = 'a/A Homework Logger'
 
     # tester IDs plus a valid API_KEY if necessary
-    SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
+    # SHEET_ID = '1MQfI2PPMkBExKMIJoiMb0F_2ENkMtwviD5dDgvVQx7M'
 
     # SHEET_ID = '1-b_qTGM-QpBv7AyXF4PHLDEMFNI3g8TL72ZsRFeBj2Q'
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
-    # SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
+    SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
 
     MARK = [['X']]
 
@@ -95,7 +95,7 @@ class SheetWriter:
         count = 0
         for cell in self.range:
             self.markCell(cell)
-            print(f'{cell} marked')
+            print(f'{cell} marked ❎')
             count += 1
 
         print(f'{count} cell(s) marked')
@@ -122,7 +122,10 @@ class SheetWriter:
         cells = []
         col = self.WEEK_DAYS[self.day]
         for student in self.students_complete:
-            cells.append(col + self.student_keys[student])
+            try:
+                cells.append(col + self.student_keys[student])
+            except:
+                print('🚨 oh no! 🚨 this email isn\'t on the spreadsheet: ' + student)
         self.range = cells
 
     def setup(self):
