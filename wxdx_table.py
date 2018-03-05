@@ -34,5 +34,5 @@ WEEK_DAYS = {
     'W7D3' : 'AJ',
     'W7D4' : 'AK',
     'W7D5' : 'AL',
-    'W8D1' : 'AK'
+    'W8D1' : 'AM'
 }
