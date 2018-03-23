@@ -7,7 +7,8 @@ import pdb
 
 def validateDate(date):
     matchDashes = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', date)
-    matchSlashes = re.search('[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}', date)
+    matchSlashes = re.search('[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}', date)
+    # matchSlashes = re.search('[0-9]{4}/[0-9]{1,2}/[0-9]{1,2}', date)
     if matchDashes or matchSlashes or date == "":
         return True
     return False
@@ -23,14 +24,15 @@ def main():
         print(lineSeparator)
         day = input('Please enter a valid day (WxDx):')
     print(lineSeparator)
-    date = input("Enter date to search after (optional; defaults to yesterday) (yyyy/mm/dd):\n")
+    date = input("Enter date to search after (optional; defaults to yesterday) (yyyy-mm-dd):\n")
     while not validateDate(date):
         print(lineSeparator)
-        date = input("Please enter a valid date (yyyy/mm/dd): ")
+        date = input("Please enter a valid date (yyyy-mm-dd): ")
     print(lineSeparator)
     reader = GmailReader(day, date)
     print("🕵️‍♀️ Finding the good students who did their work...")
     reader.populateMessageSenders()
+    pdb.set_trace()
     writer = SheetWriter(day, reader.submitterEmails)
     writer.setup()
     cells = writer.range

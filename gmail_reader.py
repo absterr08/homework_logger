@@ -41,11 +41,11 @@ class GmailReader:
     def setDateQuery(self, date):
         if date == '':
             dayBeforeToday = datetime.date.today() - datetime.timedelta(2)
-            return "after:" + str(dayBeforeToday)
+            return "subject:hwrk " + "subject:+" + self.day + " after:" + str(dayBeforeToday)
         givenDate = datetime.datetime.strptime(date, "%Y-%m-%d")
         dayBefore = (givenDate - datetime.timedelta(2)).date()
         dayAfter = (givenDate + datetime.timedelta(2)).date()
-        return "after:" + str(dayBefore) + " before:" + str(dayAfter)
+        return "hwrk " + self.day + " after:" + str(dayBefore) + " before:" + str(dayAfter)
 
     def get_credentials(self):
         """Gets valid user credentials from storage.
@@ -88,10 +88,17 @@ class GmailReader:
         return base64.urlsafe_b64decode(message['raw'].encode('ASCII')).decode('utf-8')
 
     def getMessageSubject(self, messageBody):
-        return re.search('Subject: (.*?)\\r\\n', messageBody).group(1)
+        match = re.search('Subject: (.*?)\\r\\n', messageBody).group(1)
+        return match
 
     def getMessageSenderEmail(self, messageBody):
-        return re.search('From:.*?<(.*?)>\\r\\n', messageBody).group(1)
+        try:
+            # email = re.search('From: .*?<(.*?)>\\r\\n', messageBody).group(1)
+            email = re.search('Original-Sender: (.*?)\\r\\n', messageBody).group(1)
+            # pdb.set_trace()
+            return email.lower()
+        except:
+            pdb.set_trace()
 
     def getMessageSenderName(self, messageBody):
         return re.search('From: (.*?) <.*?>\\r\\n', messageBody).group(1)
@@ -105,7 +112,11 @@ class GmailReader:
     def populateMessageSenders(self):
         messageIds = self.getMessageIds()
         for messageId in messageIds:
+            message = self.messages.get(userId='me', id=messageId, format='full').execute()
+            headers = message['payload']['headers']
+            # print(headers[41])
             messageBody = self.getMessageBody(messageId)
-            if self.checkMessageSubject(messageBody):
-                senderEmail = self.getMessageSenderEmail(messageBody)
-                self.submitterEmails.append(senderEmail)
+            # if self.checkMessageSubject(messageBody):
+            senderEmail = self.getMessageSenderEmail(messageBody)
+            print(senderEmail)
+            self.submitterEmails.append(senderEmail)

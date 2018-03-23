@@ -32,7 +32,8 @@ class SheetWriter:
     API_KEY = 'AIzaSyCkDVeCy_Y2Zaa_3B7nfME8xB0xXNLw8Dw'
 
     #actual a/A sheet:
-    SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
+    # SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
+    SHEET_ID = '15iYIcRqDP4MqiSLvUE0R7g2LLiAumkbBf8yZYZwZYo4'
 
     MARK = [['X']]
 
@@ -64,7 +65,6 @@ class SheetWriter:
         home_dir = os.path.expanduser('~')
         credential_dir = os.path.join(home_dir, '.credentials')
         if not os.path.exists(credential_dir):
-            # pdb.set_trace()
             os.makedirs(credential_dir)
         credential_path = os.path.join(credential_dir,
                                        'homework_logger-google-docs-api.json')
