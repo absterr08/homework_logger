@@ -32,7 +32,7 @@ def main():
     reader = GmailReader(day, date)
     print("🕵️‍♀️ Finding the good students who did their work...")
     reader.populateMessageSenders()
-    pdb.set_trace()
+    # pdb.set_trace()
     writer = SheetWriter(day, reader.submitterEmails)
     writer.setup()
     cells = writer.range

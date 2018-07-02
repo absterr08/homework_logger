@@ -33,7 +33,8 @@ class SheetWriter:
 
     #actual a/A sheet:
     # SHEET_ID = '1PyYBW6edPNbnVE-EyfmMvPhA9up35aVFA48gw8eVUdM'
-    SHEET_ID = '15iYIcRqDP4MqiSLvUE0R7g2LLiAumkbBf8yZYZwZYo4'
+    # SHEET_ID = '15iYIcRqDP4MqiSLvUE0R7g2LLiAumkbBf8yZYZwZYo4'
+    SHEET_ID = '1g2Y5iJ9a69ZXNWJ2WroNmGHR5ZVE6G2Q9126Z-n46-Q'
 
     MARK = [['X']]
 
@@ -125,7 +126,7 @@ class SheetWriter:
             try:
                 cells.append(col + self.student_keys[student])
             except:
-                print('🚨 oh no! 🚨 this email isn\'t on the spreadsheet: ' + student)
+                print('🚨 oh no! 🚨 this email isn\'t on the spreadsheet: ' + str(student))
         self.range = cells
 
     def setup(self):

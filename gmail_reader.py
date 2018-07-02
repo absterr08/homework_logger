@@ -39,13 +39,14 @@ class GmailReader:
         self.searching = False
 
     def setDateQuery(self, date):
-        if date == '':
-            dayBeforeToday = datetime.date.today() - datetime.timedelta(2)
-            return "subject:hwrk " + "subject:+" + self.day + " after:" + str(dayBeforeToday)
-        givenDate = datetime.datetime.strptime(date, "%Y-%m-%d")
-        dayBefore = (givenDate - datetime.timedelta(2)).date()
-        dayAfter = (givenDate + datetime.timedelta(2)).date()
-        return "hwrk " + self.day + " after:" + str(dayBefore) + " before:" + str(dayAfter)
+        # if date == '':
+        #     dayBeforeToday = datetime.date.today() - datetime.timedelta(5)
+        #     return "subject:hwrk " + "subject:+" + self.day + " after:" + str(dayBeforeToday)
+        # givenDate = datetime.datetime.strptime(date, "%Y-%m-%d")
+        # dayBefore = (givenDate - datetime.timedelta(2)).date()
+        # dayAfter = (givenDate + datetime.timedelta(2)).date()
+        # return "hwrk " + self.day + " after:" + str(dayBefore) + " before:" + str(dayAfter)
+        return "hwrk " + self.day + " after:2018-05-21"
 
     def get_credentials(self):
         """Gets valid user credentials from storage.
@@ -77,11 +78,17 @@ class GmailReader:
 
     def getMessageIds(self):
         messages = self.messages.list(userId='me',
-        q=self.dateQuery, maxResults=1000, labelIds=self.LABEL_ID).execute()['messages']
+        q=self.dateQuery,
+        maxResults=1000,
+        labelIds=self.LABEL_ID).execute()
         messageIds = []
-        for message in messages:
-            messageIds.append(message['id'])
-        return messageIds
+        try:
+            messages = messages['messages']
+            for message in messages:
+                messageIds.append(message['id'])
+            return messageIds
+        except:
+            return messageIds
 
     def getMessageBody(self, messageId):
         message = self.messages.get(userId='me', id=messageId, format='raw').execute()
@@ -98,7 +105,8 @@ class GmailReader:
             # pdb.set_trace()
             return email.lower()
         except:
-            pdb.set_trace()
+            # pdb.set_trace()
+            print('')
 
     def getMessageSenderName(self, messageBody):
         return re.search('From: (.*?) <.*?>\\r\\n', messageBody).group(1)
@@ -120,3 +128,4 @@ class GmailReader:
             senderEmail = self.getMessageSenderEmail(messageBody)
             print(senderEmail)
             self.submitterEmails.append(senderEmail)
+        # pdb.set_trace()
